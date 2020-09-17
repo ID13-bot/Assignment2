@@ -1,70 +1,62 @@
 import java.util.Scanner;				// Scanner required for player input
 
-/**
- * The main class for the game Tic-Tac-Toe.
- * Controls the flow of the game, allowing each player to enter an option until the game ends.
- */
-
 public class GameMain {
 	private static Scanner scanner = new Scanner(System.in);  // Scanner for input
 	
 	private Grid grid;					// The game board
 	private boolean gameOver;			// Whether game is playing or over
 	private Player winner;				// Winner of the game
-	private Player currentPlayer;		// Current player (enum)
+	private Player currentPlayer;		// Current player 
  
-   /**
-    * Constructor
-    * Sets up the game. Creates the grid and sets the values of the variables before calling the play method.
-    */
-   public GameMain() {
-	   // Create the grid
-	   
-	   // TODO: Create a new instance of the "Grid"class
-	   
-	   // Reset the game variables to their defaults
-	   
-	   // TODO: Assign the default values for currentPlayer (Player.X), gameOver (false), and winner (null)
+ 
+   public GameMain() {				//Constructor: Creates the grid and sets the values of the variables before calling the play method.
 
-	   // Begin playing the game
+	   grid = new Grid();			// Create the grid
 	   
-	   // TODO: Call the "play()" method
+	   currentPlayer = Player.X;	// Reset the game variables to their defaults
+	   gameOver = false;
+	   winner = null;
+
+	   play();						// Begin playing the game
    }
    
-   /**
-    * Controls the game play, rotates between player turns until a winner is decided.
-    */
-   public void play() {
+
+   public void play() {							//Controls the game play, rotates between player turns until a winner is decided.
 	   do {
 	         playerMove(currentPlayer);			// Have the player perform their move
 	         grid.display();					// Display the current game board
 	         checkForWinner(currentPlayer);		// Checks if the game has been won
 	         
-	         // Display results if game is over
-	         if(gameOver) {
+	         if(gameOver) {						// Display results if game is over
 	        	 if(winner == Player.X) {
-		        	 System.out.println("Player X wins!");
+	        		 System.out.println();
+		        	 System.out.println("----Player X wins!----");
+		        	 System.out.println();
 		         }
-	        	 
-	        	 // TODO: Display result if player O wins
-	        	 
-	        	 // TODO: Display result if it was a draw
+	        	 else if (winner == Player.O) {
+	        		 System.out.println();
+		        	 System.out.println("----Player O wins----!");
+		        	 System.out.println();
+	        	 }
+	        	 else { 
+	        		 System.out.println();
+	        		 System.out.println("----The game was a draw!----");
+	        		 System.out.println();
+	        	 }
 	         }
 	         
-	         // Switch turn to the next player
-	         if(currentPlayer == Player.X) {
+	         
+	         if(currentPlayer == Player.X) {	// Switch turn to the next player
 	        	 currentPlayer = Player.O;
 	         } else {
 	        	 currentPlayer = Player.X;
 	         }
 	         
-	      } while (!gameOver);  // repeat until game-over
+	      } while (!gameOver);  				// Repeat until game-over
    }
  
-   /** 
-    * Handles the player making their move, checks if the move is valid before making it.
-    */
-   public void playerMove(Player turnPlayer) {
+
+   public void playerMove(Player turnPlayer) {	//Handles the player making their move, checks if the move is valid before making it.
 	   
       boolean validInput = false;
       
@@ -74,17 +66,14 @@ public class GameMain {
          if (turnPlayer == Player.X) {
             System.out.print("Player 'X', enter your move (row[1-3] column[1-3]): ");
          } else {
-            
-        	 // TODO: Inform Player 'O' to enter their move
-        	 
+            System.out.print("Player 'O', enter your move (row[1-3] column[1-3]): ");  //Inform Player 'O' to enter their move 
          }
          
-         // Obtains input from the player for both row and column
-         int row = scanner.nextInt();
+         int row = scanner.nextInt();			// Obtains input from the player for both row and column
          int col = scanner.nextInt();
          
-         // Decrease the value entered by 1 to compensate for the array index starting at 0
-         row--;
+
+         row--;									// Decrease the value entered by 1 to compensate for the array index starting at 0
          col--;
          
          // Verify the values the player entered are valid (position is valid and empty)
@@ -95,35 +84,50 @@ public class GameMain {
         	 validInput = true;
          } else {
         	 
-        	 // TODO: Display an error message that the move was not valid.
+             System.out.println("Invalid location selected, please try again."); 		//Display an error message that the move was not valid.
          }
          
       } while (!validInput);   // Repeat until input is valid
    }
  
-   /**
-    * Checks if the game has ended
-    */
-   public void checkForWinner(Player turnPlayer) {
+
+   public void checkForWinner(Player turnPlayer) {	//Checks if the game has ended
       if (grid.hasWon(turnPlayer)) {
     	  
-    	  // TODO: Set gameOver and winner appropriately
+    	  gameOver = true;
+    	  winner = turnPlayer;					//Set gameOver and winner appropriately
 
       } else if (grid.isDraw()) {
-
-    	  // TODO: Set gameOver and winner appropriately
+    	  gameOver = true;
       }
    }
- 
-   /**
-    * The main() method
-    */
-   public static void main(String[] args) {
+   
+   public static void main(String[] args) {		//The main() method
 	   
-	   // TODO: Add a loop to restart the game once it has finished
+	   boolean playAgain = true;
+	   boolean invalidInput = true;
+	   do {
+		   new GameMain();
+		   System.out.println("Would you like to play again? (y/n)");
+		   Scanner scanner = new Scanner(System.in);
+		   String input = scanner.next();
+		   do {
+			   if (input.equals("y") || input.equals("Y")) {
+				   playAgain = true;
+				   invalidInput = false;
+			   } else if (input.equals("n") || input.equals("N")) {
+				   playAgain = false;
+				   invalidInput = false;
+			   } else {
+				   System.out.println("INVAILD INPUT");
+				   System.out.println();
+				   System.out.println("Would you like to play again? (y/n)");
+				   input = scanner.next();
+			   }
+		   } while (invalidInput);
+		   
+	   } while (playAgain);
 	   
-	   // TODO: Then update the loop to ask the player if they want to play again, exit if they do not
 	   
-	   new GameMain();
 	}
 }

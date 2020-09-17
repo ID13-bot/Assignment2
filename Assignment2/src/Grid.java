@@ -1,21 +1,17 @@
-/**
- * The grid represents the game board.
- */
-public class Grid {
-	// Define the amount of rows and columns
-	int ROWS = 3;			// Rows
-	int COLUMNS = 3;		// Columns
+
+public class Grid {								// The grid represents the game board.
+												// Define the amount of rows and columns
+	public static final int ROWS = 3;			// Rows
+	public static final int COLUMNS = 3;		// Columns
  
 	Box[][] board;								// Represents the game board as a grid
 	int currentRow;								// Row that was played last
 	int currentCol;								// Column that was played last
- 
-	/**
-	 * Constructor
-	 */
-   public Grid() {
+	
+	
+   public Grid() {								//Constructor
       
-      // TODO: Initialise the board array using ROWS and COLUMNS
+	  board = new Box[ROWS][COLUMNS];			//Initialise the board array using ROWS and COLUMNS
       
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLUMNS; ++col) {
@@ -24,63 +20,56 @@ public class Grid {
       }
    }
  
-   /**
-    * Checks if the game has ended in a draw
-    * One way to do this is to check that there are no empty positions left
-    */
-   public boolean isDraw() {
-	   
-	   // TODO: Check whether the game has ended in a draw. 
-	   // Hint: Use a nested loop (see the constructor for an example). Check whether any of the Boxes in the board grid are Player.Empty. If they are, it is not a draw.
-	   // Hint: Return false if it is not a draw, return true if there are not empty positions left
-	   
 
+   public boolean isDraw() {					//Checks if the game has ended in a draw
+	   
+	   for (int row = 0; row < ROWS; ++row) {
+	         for (int col = 0; col < COLUMNS; ++col) {
+	            if (board[row][col].content == Player.EMPTY) {
+	            	return false;
+	            }
+	         }  
+	      }
+	   return true;
    }
  
-   /**
-    * Return true if the turn player has won after making their move at the coordinate given
-    */
-   public boolean hasWon(Player player) {
-	   // Row check
-	   if(board[currentRow][0].content == player && board[currentRow][1].content == player && board[currentRow][2].content == player) {
+
+   public boolean hasWon(Player player) {			//Return true if the turn player has won after making their move at the coordinate given
+
+	   if(board[currentRow][0].content == player && board[currentRow][1].content == player && board[currentRow][2].content == player) {		// Row check
 		   return true;
 	   }
-	   // Column check
-
-	   // TODO: Check if the currentCol is filled.
-	   // Hint: Use the row code above as a starting point, remember that it goes board[row][column].
 	   
-	   // Diagonal check (check both directions
-	   if(board[0][0].content == player && board[1][1].content == player && board[2][2].content == player) {
+	   if(board[0][currentCol].content == player && board[1][currentCol].content == player && board[2][currentCol].content == player) {		// Column check
 		   return true;
 	   }
-
-	   // TODO: Check the diagonal in the other direction
 	   
-	   // No one has won yet
-	   return false;
+	   if(board[0][0].content == player && board[1][1].content == player && board[2][2].content == player) {		// Diagonal check 
+		   return true;
+	   }
+	   if(board[0][2].content == player && board[1][1].content == player && board[2][0].content == player) {		// Diagonal check 
+		   return true;
+	   }
+	   else {
+		   return false;
+	   }
+	   
    }
  
-   /**
-    * Draws the tic-tac-toe board to the screen
-    */
+
    public void display() {
-      for (int row = 0; row < ROWS; ++row) {
+      for (int row = 0; row < ROWS; ++row) {				//Draws the tic-tac-toe board to the screen
          for (int col = 0; col < COLUMNS; ++col) {
         	 
-        	 // Draw the contents of the box
-        	 board[row][col].display();
+        	 board[row][col].display();						//Draw the contents of the box
         	 
-        	 // Draw the vertical line
-        	 if (col < COLUMNS - 1) System.out.print("|");
-        	 
+        	 if (col < COLUMNS - 1) System.out.print("|");	//Draw the vertical line
     	 }
          System.out.println();
          
-         // Draw the horizontal line
          if (row < ROWS - 1) {
-        	 System.out.println("-----------");
+        	 System.out.println("-----------");				//Draw the horizontal line
          }
       }
    }
-}
+}	//End of class Grid
